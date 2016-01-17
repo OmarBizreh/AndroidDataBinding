@@ -1,5 +1,12 @@
 # AndroidDataBinding
-Sample app for Android Databinding + Recycler View + SQLite DB
+<h1>About</h1>
+Sample project demonstraiting: 
+<ul>
+<li>Android DataBinding</li>
+<li>Recylcer View</li>
+<li>Navigation Drawer</li>
+<li>SQLite Database</li>
+</ul>
 
 
 <h1>Screenshot</h1>
