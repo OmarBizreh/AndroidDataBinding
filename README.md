@@ -1,4 +1,3 @@
-# AndroidDataBinding
 <h1>About</h1>
 Sample project demonstraiting: 
 <ul>
@@ -23,6 +22,9 @@ Sample project demonstraiting:
 <ul><li>Open in Android Studio</li>
 <li>Click Run</li></ul>
 
+
+<h1>Contribute</h1>
+Improvements to code are welcomed
 
 <h1>License</h1>
 
