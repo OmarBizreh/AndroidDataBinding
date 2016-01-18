@@ -48,16 +48,25 @@ public class MainActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Integer sizeBefore = InstanceReferences.getUsers().size();
+            public void onClick(final View view) {
+                final Integer sizeBefore = InstanceReferences.getUsers().size();
                 InstanceReferences.getUsers().addAll(handler.GetUsers());
                 Integer sizeAfter = InstanceReferences.getUsers().size();
                 if (sizeAfter > sizeBefore) {
-                    Snackbar.make(view, "User Added", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Snackbar.make(view, "User Added", Snackbar.LENGTH_LONG).show();
                 } else {
                     Snackbar.make(view, "Failed to add User", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    InstanceReferences.getUsers().addAll(handler.GetUsers());
+                                    if (InstanceReferences.getUsers().size() < sizeBefore) {
+                                        Snackbar.make(view, "Still unable to add user", Snackbar.LENGTH_LONG).show();
+                                    } else {
+                                        Snackbar.make(view, "User Added", Snackbar.LENGTH_LONG).show();
+                                    }
+                                }
+                            }).show();
                 }
             }
         });
