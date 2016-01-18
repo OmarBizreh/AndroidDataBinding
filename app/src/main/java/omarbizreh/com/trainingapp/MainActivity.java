@@ -1,5 +1,6 @@
 package omarbizreh.com.trainingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
@@ -119,27 +120,33 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Class mFragmentClass;
+        Class mFragmentClass = null;
 
         if (id == R.id.nav_camera) {
             mFragmentClass = UsersFragment.class;
         } else if (id == R.id.nav_gallery) {
             mFragmentClass = UsersFragment.class;
-        } else// if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_slideshow) {
             mFragmentClass = GroupsFragment.class;
-       /* } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, InstanceReferences.getUsers().get(0).getDisplayName());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, InstanceReferences.getUsers().get(0).getPhoneNumber());
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
         } else if (id == R.id.nav_send) {
 
         }
-        */
+
         try {
             // Create instance of our fragment.
-            mFragment = (Fragment) mFragmentClass.newInstance();
-            FragmentManager mFragmentManager = getSupportFragmentManager();
-            mFragmentManager.beginTransaction().replace(R.id.main_frame, mFragment).commit();
+            if (mFragmentClass != null) {
+                mFragment = (Fragment) mFragmentClass.newInstance();
+                FragmentManager mFragmentManager = getSupportFragmentManager();
+                mFragmentManager.beginTransaction().replace(R.id.main_frame, mFragment).commit();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
