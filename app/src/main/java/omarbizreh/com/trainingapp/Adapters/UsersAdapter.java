@@ -8,10 +8,14 @@ import android.databinding.ObservableList;
 import android.databinding.ObservableList.OnListChangedCallback;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Collections;
 
 import omarbizreh.com.trainingapp.BR;
 import omarbizreh.com.trainingapp.DataModels.UserModel;
@@ -24,6 +28,34 @@ import omarbizreh.com.trainingapp.R;
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> {
 
     private NotifyListChanged mChangeListener = new NotifyListChanged();
+
+    public void CreateDragAndDrop(RecyclerView mRecyclerView) {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            private Integer before = -1;
+
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
+                        ItemTouchHelper.DOWN | ItemTouchHelper.UP);
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                Collections.swap(InstanceReferences.getUsers(), viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            }
+
+            @Override
+            public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
+                UsersAdapter.this.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            }
+        });
+        helper.attachToRecyclerView(mRecyclerView);
+    }
 
     private class NotifyListChanged extends OnListChangedCallback<ObservableList<UserModel>> {
 
@@ -74,6 +106,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        this.CreateDragAndDrop(recyclerView);
         InstanceReferences.getUsers().addOnListChangedCallback(this.mChangeListener);
     }
 
